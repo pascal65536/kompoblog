@@ -1,0 +1,10 @@
+CODE_STR = "xxx"
+SALT = 0
+DOMAIN = "http://127.0.0.1"
+
+# import string
+# import random
+# CODE_STR = string.printable[0:62]
+# ll = list(CODE_STR)
+# random.shuffle(ll)
+# CODE_STR = ''.join(ll)

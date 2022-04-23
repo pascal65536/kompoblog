@@ -1,0 +1,9 @@
+h1 {
+    font-size: 60px;
+    color: #ffffff;
+    font-weight: 800
+}
+
+.bg-color-white {background-color: #ffffff;}
+.bg-color-blue {background-color: #1d9ef9;}
+.bg-color-red {background-color: #ea3332;}
