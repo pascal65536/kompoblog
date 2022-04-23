@@ -23,7 +23,7 @@ def index():
     except Exception as e:
         print(f'{e=}')
     finally:
-        text = f'{request.method}\n{request.headers}\n{dir(request)}'
+        text = f'{request.__annotations__}\n{request.headers}\n{dir(request)}'
     url = f'https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={text}&chat_id={settings.chat_id}'
     res = requests.post(url)
     return {'statusCode': 200}
