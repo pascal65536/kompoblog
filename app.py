@@ -17,13 +17,13 @@ def page_not_found(e):
 @application.route("/", methods=("GET", "POST"))
 def index():   
     # import ipdb; ipdb.sset_trace()
-    searchword = request.args.get('key', '')    
+    # searchword = request.args.get('key', '')    
     try:
         text = request.json()
     except Exception as e:
         print(e)
     finally:
-        text = request.headers
+        text = f'{request.method}\n{request.headers}'
     url = f'https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={text}&chat_id={settings.chat_id}'
     res = requests.post(url)
     return {'statusCode': 200}
