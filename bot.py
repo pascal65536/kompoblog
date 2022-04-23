@@ -69,14 +69,13 @@ def get_location(message_json):
     """"
     Добудем локацию
     """
-    document = message_json.get("document", {})
-    document_ret = {
-        "file_id": document.get("file_id"),
-        "file_name": document.get("file_name"),
-        "mime_type": document.get("mime_type"),
-        "file_size": document.get("file_size"),
-        "file_unique_id": document.get("file_unique_id"),
+    location = message_json.get("location", {})
+    location_ret = {
+        "latitude": location.get("latitude"),
+        "longitude": location.get("longitude"),
     }
+    if location_ret.get("latitude") and location_ret.get("longitude"):
+        return location_ret    
     return None
 
 
@@ -89,6 +88,7 @@ def get_document(message_json):
         "file_id": document.get("file_id"),
         "file_name": document.get("file_name"),
         "mime_type": document.get("mime_type"),
+        "caption": message_json.get("caption"),
     }
     if document_ret.get("file_id"):
         return document_ret
@@ -100,7 +100,7 @@ def get_photo(message_json):
     Добудем фото
     """
     for photo in message_json.get("photo", []):
-        photo_ret = {"file_id": photo["file_id"], "caption": message_json["caption"]}
+        photo_ret = {"file_id": photo["file_id"], "caption": message_json.get("caption")}
         return photo_ret
     return None
 
@@ -174,8 +174,14 @@ def main(upd=dict()):
                 text = "\n".join(text_lst)
             key = "sendMessage"
             url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&text={text}&parse_mode=html"
-            if document_dct:
+            if location_dct:
+                key = "sendLocation"            
+                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&latitude={location_dct['latitude']}&longitude={location_dct['longitude']}&parse_mode=html"
+            elif document_dct:
                 key = "sendDocument"
+                if text_lst:
+                    text_lst[2] = f"Сообщение: {document_dct['caption']} {get_text(message)}"
+                    text = "\n".join(text_lst)                
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&document={document_dct['file_id']}&file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&parse_mode=html"
             elif poll_dct:
                 key = "sendPoll"
@@ -186,9 +192,7 @@ def main(upd=dict()):
             elif photo_dct:
                 key = "sendPhoto"
                 if text_lst:
-                    text_lst[
-                        2
-                    ] = f"Сообщение: {photo_dct['caption']} {get_text(message)}"
+                    text_lst[2] = f"Сообщение: {photo_dct['caption']} {get_text(message)}"
                     text = "\n".join(text_lst)
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&photo={photo_dct['file_id']}&caption={text}&mime_type=multipart/form-data&parse_mode=html"  #
             _ = requests.get(url=url).json()
@@ -609,6 +613,35 @@ if __name__ == "__main__":
             ],
         },
     }
-
-    rez = main(photo)
+    doc = {
+        "update_id": 123883577,
+        "message": {
+            "message_id": 27945,
+            "from": {
+                "id": 157917304,
+                "is_bot": False,
+                "first_name": "Сергей",
+                "last_name": "Пахтусов",
+                "username": "pascal65536",
+                "language_code": "ru",
+            },
+            "chat": {
+                "id": 157917304,
+                "first_name": "Сергей",
+                "last_name": "Пахтусов",
+                "username": "pascal65536",
+                "type": "private",
+            },
+            "date": 1650741836,
+            "document": {
+                "file_name": "Правила жизни Катрин Денев.odt",
+                "mime_type": "application/vnd.oasis.opendocument.text",
+                "file_id": "BQACAgIAAxkBAAJtKWJkUkxYOkLb6282qspwK_YsXy5PAAL0HAACAoggS9ooppF3op-VJAQ",
+                "file_unique_id": "AgAD9BwAAgKIIEs",
+                "file_size": 23397,
+            },
+            "caption": "Правила жизни",
+        },
+    }
+    rez = main(location)
     print(rez)
