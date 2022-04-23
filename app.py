@@ -19,7 +19,7 @@ def page_not_found(e):
 @application.route("/", methods=("GET", "POST"))
 def index():   
     try:
-        text = request.json()
+        text = request.get_json(force=True)
     except Exception as e:
         print(f'{e=}')
     finally:
