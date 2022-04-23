@@ -65,9 +65,9 @@ def get_sender_id(message_json):
     return message_json["from"]["id"]
 
 
-def get_document(message_json):
+def get_location(message_json):
     """"
-    Добудем документ
+    Добудем локацию
     """
     document = message_json.get("document", {})
     document_ret = {
@@ -77,19 +77,32 @@ def get_document(message_json):
         "file_size": document.get("file_size"),
         "file_unique_id": document.get("file_unique_id"),
     }
-    return document_ret
+    return None
+
+
+def get_document(message_json):
+    """"
+    Добудем документ
+    """
+    document = message_json.get("document", {})
+    document_ret = {
+        "file_id": document.get("file_id"),
+        "file_name": document.get("file_name"),
+        "mime_type": document.get("mime_type"),
+    }
+    if document_ret.get("file_id"):
+        return document_ret
+    return None
 
 
 def get_photo(message_json):
     """"
     Добудем фото
     """
-    photo_ret = None
     for photo in message_json.get("photo", []):
-        if not photo_ret:
-            photo_ret = photo["file_id"]
-            return photo_ret
-    return photo_ret
+        photo_ret = {"file_id": photo["file_id"], "caption": message_json["caption"]}
+        return photo_ret
+    return None
 
 
 def get_text(message_json):
@@ -137,7 +150,8 @@ def main(upd=dict()):
     if upd["message"]:
         message = upd["message"]
         document_dct = get_document(message)
-        photo_id = get_photo(message)
+        location_dct = get_location(message)
+        photo_dct = get_photo(message)
         sticker_id = get_sticker(message)
         poll_dct = get_poll(message)
         text_lst = [
@@ -147,6 +161,11 @@ def main(upd=dict()):
             f"<code>Отправитель ID: {get_sender_id(message)}</code>",
             f"<code>Чат ID: {get_chat_id(message)}</code>",
         ]
+        print("document_dct", document_dct)
+        print("location_dct", location_dct)
+        print("photo_dct", photo_dct)
+        print("sticker_id", sticker_id)
+        print("poll_dct", poll_dct)
 
         # Напишем в чат
         text = "Спасибо за Ваше обращение! Ожидайте ответа"
@@ -157,20 +176,21 @@ def main(upd=dict()):
             url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&text={text}&parse_mode=html"
             if document_dct:
                 key = "sendDocument"
-                print(document_dct)
-                # caption={text}&
-                # &file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&file_size={document_dct['file_size']}&file_unique_id={document_dct['file_unique_id']}
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&document={document_dct['file_id']}&file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&parse_mode=html"
-                print(url)
             elif poll_dct:
                 key = "sendPoll"
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&question={poll_dct.get('question')}&options={json.dumps(poll_dct.get('options'))}"
             elif sticker_id:
                 key = "sendSticker"
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&sticker={sticker_id}"
-            elif photo_id:
+            elif photo_dct:
                 key = "sendPhoto"
-                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&photo={photo_id}&caption={text}&mime_type=multipart/form-data&parse_mode=html"
+                if text_lst:
+                    text_lst[
+                        2
+                    ] = f"Сообщение: {photo_dct['caption']} {get_text(message)}"
+                    text = "\n".join(text_lst)
+                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&photo={photo_dct['file_id']}&caption={text}&mime_type=multipart/form-data&parse_mode=html"  #
             _ = requests.get(url=url).json()
         except Exception as e:
             print("Ошибка в `sendMessage`")
@@ -230,9 +250,9 @@ if __name__ == "__main__":
         },
     }
     photo = {
-        "update_id": 123883531,
+        "update_id": 123883571,
         "message": {
-            "message_id": 27834,
+            "message_id": 27906,
             "from": {
                 "id": 157917304,
                 "is_bot": False,
@@ -248,37 +268,38 @@ if __name__ == "__main__":
                 "username": "pascal65536",
                 "type": "private",
             },
-            "date": 1650700802,
+            "date": 1650739670,
             "photo": [
                 {
-                    "file_id": "AgACAgIAAxkBAAJsumJjsgJzjSO4ys9Xv25eZkpu3xDDAAIyuDEbA-8gS9iwDYVw52FDAQADAgADcwADJAQ",
-                    "file_unique_id": "AQADMrgxGwPvIEt4",
-                    "file_size": 1468,
-                    "width": 90,
-                    "height": 60,
+                    "file_id": "AgACAgIAAxkBAAJtAmJkSdYKg3N3zToRyxeI4g5-zuzfAALMvDEbAoggS9UbcgzOOkvWAQADAgADcwADJAQ",
+                    "file_unique_id": "AQADzLwxGwKIIEt4",
+                    "file_size": 1376,
+                    "width": 67,
+                    "height": 90,
                 },
                 {
-                    "file_id": "AgACAgIAAxkBAAJsumJjsgJzjSO4ys9Xv25eZkpu3xDDAAIyuDEbA-8gS9iwDYVw52FDAQADAgADbQADJAQ",
-                    "file_unique_id": "AQADMrgxGwPvIEty",
-                    "file_size": 21127,
-                    "width": 320,
-                    "height": 213,
+                    "file_id": "AgACAgIAAxkBAAJtAmJkSdYKg3N3zToRyxeI4g5-zuzfAALMvDEbAoggS9UbcgzOOkvWAQADAgADbQADJAQ",
+                    "file_unique_id": "AQADzLwxGwKIIEty",
+                    "file_size": 17070,
+                    "width": 239,
+                    "height": 320,
                 },
                 {
-                    "file_id": "AgACAgIAAxkBAAJsumJjsgJzjSO4ys9Xv25eZkpu3xDDAAIyuDEbA-8gS9iwDYVw52FDAQADAgADeQADJAQ",
-                    "file_unique_id": "AQADMrgxGwPvIEt-",
-                    "file_size": 94565,
-                    "width": 900,
-                    "height": 600,
+                    "file_id": "AgACAgIAAxkBAAJtAmJkSdYKg3N3zToRyxeI4g5-zuzfAALMvDEbAoggS9UbcgzOOkvWAQADAgADeAADJAQ",
+                    "file_unique_id": "AQADzLwxGwKIIEt9",
+                    "file_size": 70804,
+                    "width": 597,
+                    "height": 800,
                 },
                 {
-                    "file_id": "AgACAgIAAxkBAAJsumJjsgJzjSO4ys9Xv25eZkpu3xDDAAIyuDEbA-8gS9iwDYVw52FDAQADAgADeAADJAQ",
-                    "file_unique_id": "AQADMrgxGwPvIEt9",
-                    "file_size": 115209,
-                    "width": 800,
-                    "height": 533,
+                    "file_id": "AgACAgIAAxkBAAJtAmJkSdYKg3N3zToRyxeI4g5-zuzfAALMvDEbAoggS9UbcgzOOkvWAQADAgADeQADJAQ",
+                    "file_unique_id": "AQADzLwxGwKIIEt-",
+                    "file_size": 119161,
+                    "width": 956,
+                    "height": 1280,
                 },
             ],
+            "caption": "236",
         },
     }
     sticker = {
@@ -589,5 +610,5 @@ if __name__ == "__main__":
         },
     }
 
-    rez = main(document)
+    rez = main(photo)
     print(rez)
