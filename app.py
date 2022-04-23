@@ -21,9 +21,10 @@ def index():
     try:
         text = request.get_json(force=True)
     except Exception as e:
-        print(f'{e=}')
+        print(f'index: {e=}')
     finally:
-        text = f'{request.__annotations__}\n{request.headers}\n{dir(request)}'
+        text = f'{request.get_data()}\n{request.headers}\n{request.method}'
+
     url = f'https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={text}&chat_id={settings.chat_id}'
     res = requests.post(url)
     return {'statusCode': 200}
