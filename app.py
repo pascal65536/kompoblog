@@ -19,11 +19,12 @@ def page_not_found(e):
 @application.route("/", methods=("GET", "POST"))
 def index():   
     try:
-        text = request.get_json(force=True)
+        # text = json.loads(request.get_data().decode('utf-8'))
+        text = request.get_data().decode('utf-8')
     except Exception as e:
         print(f'index: {e=}')
     finally:
-        text = f'{request.get_data()}\n{request.headers}\n{request.method}'
+        text = f'{request.headers}\n{request.method}'
 
     url = f'https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={text}&chat_id={settings.chat_id}'
     res = requests.post(url)
