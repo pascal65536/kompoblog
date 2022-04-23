@@ -1,0 +1,8 @@
+https://api.telegram.org/bot{token}/setWebhook?url=https://site.ru/
+
+https://api.telegram.org/bot{token}/getWebhookInfo
+
+https://api.telegram.org/bot{token}/deleteWebhook
+
+https://api.telegram.org/bot{token}/sendMessage?parse_mode=html&text=text&chat_id=chat_id
+
