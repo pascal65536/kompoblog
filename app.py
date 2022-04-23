@@ -25,7 +25,7 @@ def index():
         print(f'index: {e=}')
         text = f'{request.headers}\n{request.method}'
     finally:
-        text = 'empty' or text
+        text = text or 'empty'
     url = f'https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={text}&chat_id={settings.chat_id}'
     res = requests.post(url)
     return {'statusCode': 200}
