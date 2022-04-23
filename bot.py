@@ -69,9 +69,6 @@ def get_photo(message_json):
     """"
     Добудем фото
     """
-    # {'file_id': 'AgACAgIAAxkBAAJsumJjsgJzjSO4ys9Xv25eZkpu3xDDAAIyuDEbA-8gS9iwDYVw52FDAQADAgADeQADJAQ',
-    # 'file_unique_id': 'AQADMrgxGwPvIEt-', 'file_size': 94565, 'width': 900, 'height': 600}
-
     photo_ret = None
     for photo in message_json.get("photo", []):
         if not photo_ret:
@@ -99,7 +96,7 @@ def get_date(message_json):
 
 def get_sender_name(message_json):
     """"
-    Добудем имя отвечающего
+    Добудем имя отправителя
     """
     full_name_lst = [
         message_json.get("from", {}).get("first_name"),
@@ -146,65 +143,11 @@ def main(upd=dict()):
                 key = "sendPhoto"
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&photo={photo_id}&caption={text}&mime_type=multipart/form-data&parse_mode=html"
             _ = requests.get(url=url).json()
-            print(url)
         except Exception as e:
             print("Ошибка в `sendMessage`")
             time.sleep(settings.timeout)
 
     return True
-
-
-# if "message" in upd:
-# if not get_text(upd):
-# continue
-# # Напишем автору, что его ссылка опубликована
-# try:
-# key = "sendMessage"
-# text = "Спасибо за Ваше обращение! Ожидайте ответа"
-# if get_text(upd) == "/start":
-# text = f"Здравствуйте, {get_sender_name(upd)}!\n\nНапишите свой вопрос и вам ответят в ближайшее время."
-# sender_id = get_sender_id(upd)
-# url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={sender_id}&text={text}&parse_mode=html"
-# _ = requests.get(url=url).json()
-# except Exception as e:
-# print("Ошибка в `sendMessage`")
-# time.sleep(timeout)
-
-# if get_text(upd) == "/start":
-# continue
-# # Напишем в скрытый канал
-# try:
-# key = "sendMessage"
-# sender_id = get_sender_id(upd)
-# text = f"{num2str(sender_id)}\n{get_sender_name(upd)}:\n{get_text(upd)}"
-# url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&text={text}&parse_mode=html"
-# _ = requests.get(url=url).json()
-# except Exception as e:
-# print("Ошибка в `sendMessage`")
-# time.sleep(timeout)
-
-# elif "channel_post" in upd:
-# if "reply_to_message" not in upd["channel_post"]:
-# continue
-# sender_chat = upd["channel_post"]["sender_chat"]["id"]
-# if str(sender_chat) != settings.chat_id:
-# continue
-# vopros = upd["channel_post"]["reply_to_message"]["text"]
-# otvet = upd["channel_post"]["text"]
-# title = upd["channel_post"]["sender_chat"]["title"]
-# # Напишем автору из чата
-# try:
-# key = "sendMessage"
-# text = f"<b>{title}:</b> {otvet}"
-# sender_id = str2num(vopros.split("\n")[0])
-# url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={sender_id}&text={text}&parse_mode=html"
-# _ = requests.get(url=url).json()
-# except Exception as e:
-# print("Ошибка в `sendMessage`")
-# time.sleep(timeout)
-
-# else:
-# print("Странно")
 
 
 if __name__ == "__main__":
