@@ -65,6 +65,21 @@ def get_sender_id(message_json):
     return message_json["from"]["id"]
 
 
+def get_document(message_json):
+    """"
+    Добудем документ
+    """
+    document = message_json.get("document", {})
+    document_ret = {
+        "file_id": document.get("file_id"),
+        "file_name": document.get("file_name"),
+        "mime_type": document.get("mime_type"),
+        "file_size": document.get("file_size"),
+        "file_unique_id": document.get("file_unique_id"),
+    }
+    return document_ret
+
+
 def get_photo(message_json):
     """"
     Добудем фото
@@ -121,6 +136,7 @@ def main(upd=dict()):
 
     if upd["message"]:
         message = upd["message"]
+        document_dct = get_document(message)
         photo_id = get_photo(message)
         sticker_id = get_sticker(message)
         poll_dct = get_poll(message)
@@ -139,7 +155,14 @@ def main(upd=dict()):
                 text = "\n".join(text_lst)
             key = "sendMessage"
             url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&text={text}&parse_mode=html"
-            if poll_dct:
+            if document_dct:
+                key = "sendDocument"
+                print(document_dct)
+                # caption={text}&
+                # &file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&file_size={document_dct['file_size']}&file_unique_id={document_dct['file_unique_id']}
+                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&document={document_dct['file_id']}&file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&parse_mode=html"
+                print(url)
+            elif poll_dct:
                 key = "sendPoll"
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&question={poll_dct.get('question')}&options={json.dumps(poll_dct.get('options'))}"
             elif sticker_id:
@@ -380,6 +403,35 @@ if __name__ == "__main__":
             "location": {"latitude": 56.051352, "longitude": 92.977345},
         },
     }
+    document = {
+        "update_id": 123883564,
+        "message": {
+            "message_id": 27883,
+            "from": {
+                "id": 157917304,
+                "is_bot": False,
+                "first_name": "Сергей",
+                "last_name": "Пахтусов",
+                "username": "pascal65536",
+                "language_code": "ru",
+            },
+            "chat": {
+                "id": 157917304,
+                "first_name": "Сергей",
+                "last_name": "Пахтусов",
+                "username": "pascal65536",
+                "type": "private",
+            },
+            "date": 1650726016,
+            "document": {
+                "file_name": "people.json",
+                "mime_type": "application/json",
+                "file_id": "BQACAgIAAxkBAAJs62JkFICKtCqUghTgcYKcDsEbbiztAAIlGwACAoggSxM3ZsHzeVruJAQ",
+                "file_unique_id": "AgADJRsAAgKIIEs",
+                "file_size": 37276,
+            },
+        },
+    }
     link = {
         "update_id": 123883541,
         "message": {
@@ -537,5 +589,5 @@ if __name__ == "__main__":
         },
     }
 
-    rez = main(poll)
+    rez = main(document)
     print(rez)
