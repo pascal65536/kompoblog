@@ -112,6 +112,12 @@ def main(upd=dict()):
 
     if not upd["update_id"]:
         return False
+    
+    try:
+       url = f'https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={upd}&chat_id={settings.sender_id}'
+       _ = requests.get(url=url).json()
+    except Exception:
+       print("Ошибка в `sendMessage`")
 
     if upd["message"]:
         message = upd["message"]
