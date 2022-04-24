@@ -75,7 +75,7 @@ def get_location(message_json):
         "longitude": location.get("longitude"),
     }
     if location_ret.get("latitude") and location_ret.get("longitude"):
-        return location_ret    
+        return location_ret
     return None
 
 
@@ -100,7 +100,10 @@ def get_photo(message_json):
     Добудем фото
     """
     for photo in message_json.get("photo", []):
-        photo_ret = {"file_id": photo["file_id"], "caption": message_json.get("caption")}
+        photo_ret = {
+            "file_id": photo["file_id"],
+            "caption": message_json.get("caption"),
+        }
         return photo_ret
     return None
 
@@ -140,6 +143,9 @@ def main(upd=dict()):
 
     if not upd["update_id"]:
         return False
+    
+    if 'my_chat_member' in upd:
+        return None
 
     try:
         url = f"https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={upd}&chat_id={settings.sender_id}"
@@ -175,13 +181,15 @@ def main(upd=dict()):
             key = "sendMessage"
             url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&text={text}&parse_mode=html"
             if location_dct:
-                key = "sendLocation"            
+                key = "sendLocation"
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&latitude={location_dct['latitude']}&longitude={location_dct['longitude']}&parse_mode=html"
             elif document_dct:
                 key = "sendDocument"
                 if text_lst:
-                    text_lst[2] = f"Сообщение: {document_dct['caption']} {get_text(message)}"
-                    text = "\n".join(text_lst)                
+                    text_lst[
+                        2
+                    ] = f"Сообщение: {document_dct['caption']} {get_text(message)}"
+                    text = "\n".join(text_lst)
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&document={document_dct['file_id']}&file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&parse_mode=html"
             elif poll_dct:
                 key = "sendPoll"
@@ -192,7 +200,9 @@ def main(upd=dict()):
             elif photo_dct:
                 key = "sendPhoto"
                 if text_lst:
-                    text_lst[2] = f"Сообщение: {photo_dct['caption']} {get_text(message)}"
+                    text_lst[
+                        2
+                    ] = f"Сообщение: {photo_dct['caption']} {get_text(message)}"
                     text = "\n".join(text_lst)
                 url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&photo={photo_dct['file_id']}&caption={text}&mime_type=multipart/form-data&parse_mode=html"  #
             _ = requests.get(url=url).json()
@@ -643,5 +653,56 @@ if __name__ == "__main__":
             "caption": "Правила жизни",
         },
     }
-    rez = main(location)
+    spam1 = {
+        "update_id": 123883594,
+        "my_chat_member": {
+            "chat": {
+                "id": -1001117322430,
+                "title": "DIY24 ♻️",
+                "username": "diy24",
+                "type": "channel",
+            },
+            "from": {
+                "id": 157917304,
+                "is_bot": False,
+                "first_name": "Сергей",
+                "last_name": "Пахтусов",
+                "username": "pascal65536",
+                "language_code": "ru",
+            },
+            "date": 1650764602,
+            "old_chat_member": {
+                "user": {
+                    "id": 234458994,
+                    "is_bot": True,
+                    "first_name": "pascal65536",
+                    "username": "pascal65536_bot",
+                },
+                "status": "left",
+            },
+            "new_chat_member": {
+                "user": {
+                    "id": 234458994,
+                    "is_bot": True,
+                    "first_name": "pascal65536",
+                    "username": "pascal65536_bot",
+                },
+                "status": "administrator",
+                "can_be_edited": False,
+                "can_manage_chat": True,
+                "can_change_info": True,
+                "can_post_messages": True,
+                "can_edit_messages": True,
+                "can_delete_messages": True,
+                "can_invite_users": True,
+                "can_restrict_members": True,
+                "can_promote_members": False,
+                "can_manage_video_chats": True,
+                "is_anonymous": False,
+                "can_manage_voice_chats": True,
+            },
+        },
+    }
+
+    rez = main(spam1)
     print(rez)
