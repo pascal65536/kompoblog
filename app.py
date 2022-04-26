@@ -15,11 +15,10 @@ def page_not_found(e):
 
 @application.route("/1001674663399", methods=("GET", "POST"))
 def bottle():
-    if request.method == "POST":
+    if request.method in "POST":
         text = request.get_data().decode("utf-8")
         if text:
-            bot.main(json.loads(text))
-            bot.main('/1001674663399')
+            bot.main({'update_id': '1001674663399'})
         return {"statusCode": 200}
 
     if request.method == "GET":
