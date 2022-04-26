@@ -13,6 +13,19 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 
+@application.route("/1001674663399", methods=("GET", "POST"))
+def bottle():
+    if request.method == "POST":
+        text = request.get_data().decode("utf-8")
+        if text:
+            bot.main(json.loads(text))
+            bot.main('/1001674663399')
+        return {"statusCode": 200}
+
+    if request.method == "GET":
+        return render_template("404.html"), 404
+
+
 @application.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
