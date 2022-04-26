@@ -25,7 +25,7 @@ def bottle():
         return render_template("404.html"), 404
 
 
-@application.route("/", methods="GET")
+@application.route("/", methods=["GET"])
 def index():
     return render_template("404.html"), 404
 
