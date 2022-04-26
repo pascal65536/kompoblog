@@ -143,8 +143,8 @@ def main(upd=dict()):
 
     if not upd["update_id"]:
         return False
-    
-    if 'my_chat_member' in upd:
+
+    if "my_chat_member" in upd:
         return None
 
     try:

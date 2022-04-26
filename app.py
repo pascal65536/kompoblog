@@ -13,12 +13,16 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 
-@application.route("/", methods=("GET", "POST"))
-def index():
+@application.route("/<string:botname>", methods=("GET", "POST"))
+def index(botname):
+    print("." * 80)
+    print(botname)
+
     if request.method == "POST":
         text = request.get_data().decode("utf-8")
         if text:
-            bot.main(json.loads(text))
+            # bot.main(json.loads(text))
+            bot.main(botname)
         return {"statusCode": 200}
 
     if request.method == "GET":
