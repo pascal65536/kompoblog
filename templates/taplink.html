@@ -1,0 +1,33 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Ссылки на мои ресурсы | ompoblog.ru{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid bg-color-gray">
+  <div class="container">
+    <div class="d-flex vh-100 justify-content-center align-items-center">
+      <div class="h-100 d-flex justify-content-center flex-column taplink
+                  align-items-center bg-color-brown"
+                  style="width: 350px;">
+                 
+          <div class="circle-image">
+            <img class="img"
+                  src="{{ url_for('static', filename='images/pakhtusow.jpg') }}">
+          </div>
+
+          <ul>
+            <li><a href="https://t.me/pascal65535">Телеграм-канал "Пахтусов пишет"</a></li>
+            <li><a href="https://zen.yandex.ru/id/599fd4d54ffd130a0f4ca4f3">Дзен-канал "Пахтусов"</a></li>
+            <li><a href="https://zen.yandex.ru/id/5cec524b81b8e600b3b80441">Дзен-канал "SEO дядька"</a></li>
+            <li><a href="https://scratch.mit.edu/studios/31467803">Студия "Программирование со здравым смыслом на Scratch"</a></li>
+            <li><a href="https://rutube.ru/plst/145924">Rutube-канал "Программирование со здравым смыслом"</a></li>
+          </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
