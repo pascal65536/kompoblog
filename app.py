@@ -13,7 +13,7 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 
-@application.route("/1001674663399", methods=("GET", "POST"))
+@application.route("/", methods=("GET", "POST"))
 def bottle():
     if request.method in "POST":
         text = request.get_data().decode("utf-8")
@@ -25,9 +25,9 @@ def bottle():
         return render_template("404.html"), 404
 
 
-@application.route("/", methods=["GET"])
+@application.route("/taplink", methods=["GET"])
 def index():
-    return render_template("404.html"), 404
+    return render_template("taplink.html"), 404
 
 
 if __name__ == "__main__":
