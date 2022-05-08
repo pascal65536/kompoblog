@@ -365,7 +365,6 @@ def raskrutim_bot(bot_name, upd):
         return {"result": ["message is empty"], "ok": False}
 
     token = settings.bot_dct[bot_name]["token"]
-    chat_id = settings.bot_dct[bot_name]["chat_id"]
     timeout = settings.bot_dct[bot_name]["timeout"]
 
     channel_dct = dict()
@@ -398,7 +397,6 @@ def raskrutim_bot(bot_name, upd):
                 url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&text={text}&parse_mode=html"
                 _ = requests.get(url=url).json()
             except Exception as e:
-                progress(bot_name, f'{text=} "Ошибка в `sendMessage`"')
                 time.sleep(timeout)
 
     return {"result": result_lst, "ok": True}
