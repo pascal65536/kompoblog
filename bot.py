@@ -243,7 +243,7 @@ def progress(bot_name, text):
     ovner_id = settings.bot_dct[bot_name]["ovner_id"]
     key = "sendMessage"
     url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={text}&parse_mode=html"
-    requests.get(url=url).json()    
+    requests.get(url=url).json()
 
 
 def make_channel(bot_name, channel_name):
@@ -261,11 +261,8 @@ def make_channel(bot_name, channel_name):
     chat_dct = {"result": [], "ok": False}
     try:
         chat_dct = requests.get(url=url, timeout=timeout).json()
-        make_channel_dct["result"].append("getChat: OK")
-        print("getChat: OK")
     except Exception as e:
-        make_channel_dct["result"].append("Ошибка в `getChat`")
-        print("Ошибка в `getChat`")
+        progress(bot_name, "Ошибка в `getChat`")
         time.sleep(timeout)
 
     if not chat_dct["ok"] and "result" not in chat_dct:
@@ -277,11 +274,8 @@ def make_channel(bot_name, channel_name):
     chat_member_count_dct = {"result": None, "ok": False}
     try:
         chat_member_count_dct = requests.get(url=url, timeout=timeout).json()
-        make_channel_dct["result"].append("getChatMemberCount: OK")
-        print("getChatMemberCount: OK")
     except Exception as e:
-        make_channel_dct["result"].append("Ошибка в `getChatMemberCount`")
-        print("Ошибка в `getChatMemberCount`")
+        progress(bot_name, "Ошибка в `getChatMemberCount`")
         time.sleep(timeout)
 
     if not chat_member_count_dct["ok"] and "result" not in chat_member_count_dct:
@@ -317,11 +311,8 @@ def make_channel(bot_name, channel_name):
         file_dct = {"result": [], "ok": False}
         try:
             file_dct = requests.get(url=url, timeout=timeout).json()
-            make_channel_dct["result"].append("getFile: OK")
-            print("getFile: OK")
         except Exception as e:
-            make_channel_dct["result"].append("Ошибка в `getChat`")
-            print("Ошибка в `getChat`")
+            progress(bot_name, "Ошибка в `getChat`")
             time.sleep(timeout)
 
         # Если картинка получена
@@ -334,7 +325,6 @@ def make_channel(bot_name, channel_name):
                 try:
                     url = f"https://api.telegram.org/file/bot{token}/{file_path}"
                     download_file = requests.get(url=url, timeout=timeout)
-                    print("downloadFile: OK")
                     filename = os.path.join(
                         folder_pic_name, f"{channel_name.replace('@', '')}.jpg"
                     )
@@ -343,8 +333,7 @@ def make_channel(bot_name, channel_name):
                     with open(filename, "wb") as f:
                         f.write(download_file.content)
                 except Exception as e:
-                    make_channel_dct["result"].append("Ошибка в `downloadFile`")
-                    print("Ошибка в `downloadFile`")
+                    progress(bot_name, "Ошибка в `downloadFile`")
                     time.sleep(timeout)
 
                 if filename:
@@ -354,20 +343,18 @@ def make_channel(bot_name, channel_name):
                     send_author_files = filename
 
     try:
-        progress(bot_name, "Отправка в канал")
         if send_author_files:
             with open(send_author_files, "rb") as f:
                 files = {"photo": f}
                 author_dct = requests.post(url=send_author_url, files=files).json()
         else:
             author_dct = requests.get(url=send_author_url).json()
-        progress(bot_name, f"{author_dct=}")
     except Exception as e:
         progress(bot_name, f"Ошибка в `{send_author_key}`")
         time.sleep(timeout)
 
     if author_dct["ok"] is False:
-        print(f"{author_dct=}")
+        progress(bot_name, f"{author_dct=}")
     return {"result": [channel_update_dct], "ok": author_dct["ok"]}
 
 
@@ -379,8 +366,6 @@ def raskrutim_bot(bot_name, upd):
 
     token = settings.bot_dct[bot_name]["token"]
     chat_id = settings.bot_dct[bot_name]["chat_id"]
-    # folder_name = settings.bot_dct[bot_name]["folder_name"]
-    # channel_json = settings.bot_dct[bot_name]["channel_json"]
     timeout = settings.bot_dct[bot_name]["timeout"]
 
     channel_dct = dict()
@@ -413,7 +398,7 @@ def raskrutim_bot(bot_name, upd):
                 url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&text={text}&parse_mode=html"
                 _ = requests.get(url=url).json()
             except Exception as e:
-                result_lst.append(f'{text=} "Ошибка в `sendMessage`"')
+                progress(bot_name, f'{text=} "Ошибка в `sendMessage`"')
                 time.sleep(timeout)
 
     return {"result": result_lst, "ok": True}
