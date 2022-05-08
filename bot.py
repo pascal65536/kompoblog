@@ -355,13 +355,13 @@ def make_channel(bot_name, channel_name):
 
     try:
         progress(bot_name, "Отправка в канал")
-        progress(bot_name, f"{send_author_files=}")
         if send_author_files:
             with open(send_author_files, "rb") as f:
                 files = {"photo": f}
                 author_dct = requests.post(url=send_author_url, files=files).json()
         else:
             author_dct = requests.get(url=send_author_url).json()
+        progress(bot_name, f"{author_dct=}")
     except Exception as e:
         progress(bot_name, f"Ошибка в `{send_author_key}`")
         time.sleep(timeout)
