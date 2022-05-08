@@ -219,16 +219,14 @@ def main(upd=dict(), bot_name=None):
     if "my_chat_member" in upd:
         return None
 
-
     text = upd
-
 
     if bot_name == "raskrutimbot":
         text.update({'bot_name': 'raskrutimbot'})
     #     raskrutim_bot(bot_name=bot_name, upd=upd)
     elif bot_name == "pascal65536_bot":
         text.update({'bot_name': 'pascal65536_bot'})
-    #     pascal65536_bot(bot_name=bot_name, upd=upd)
+        pascal65536_bot(bot_name=bot_name, upd=upd)
 
     token = settings.bot_dct[bot_name]["token"]
     ovner_id = settings.bot_dct[bot_name]["ovner_id"]
