@@ -219,6 +219,14 @@ def main(upd=dict(), bot_name=None):
     if "my_chat_member" in upd:
         return None
 
+    bot_name = "pascal65536_bot"
+    token = settings.bot_dct[bot_name]["token"]
+    chat_id = settings.bot_dct[bot_name]["chat_id"]
+    key = "sendMessage"
+    text = upd
+    url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&text={text}&parse_mode=html"
+    requests.get(url=url).json()
+
     if bot_name == "raskrutimbot":
         raskrutim_bot(bot_name=bot_name, upd=upd)
     elif bot_name == "pascal65536_bot":
