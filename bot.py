@@ -355,6 +355,7 @@ def make_channel(bot_name, channel_name):
 
     try:
         progress(bot_name, "Отправка в канал")
+        progress(bot_name, f"{send_author_files=}")
         if send_author_files:
             with open(send_author_files, "rb") as f:
                 files = {"photo": f}
