@@ -235,12 +235,22 @@ def main(upd=dict(), bot_name=None):
     return True
 
 
+def progress(bot_name, text):
+    token = settings.bot_dct[bot_name]["token"]
+    ovner_id = settings.bot_dct[bot_name]["ovner_id"]
+
+    token = settings.bot_dct[bot_name]["token"]
+    ovner_id = settings.bot_dct[bot_name]["ovner_id"]
+    key = "sendMessage"
+    url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={text}&parse_mode=html"
+    requests.get(url=url).json()    
+
+
 def make_channel(bot_name, channel_name):
 
     token = settings.bot_dct[bot_name]["token"]
     chat_id = settings.bot_dct[bot_name]["chat_id"]
     folder_pic_name = settings.bot_dct[bot_name]["folder_pic_name"]
-    timeout = settings.bot_dct[bot_name]["timeout"]
     timeout = settings.bot_dct[bot_name]["timeout"]
 
     make_channel_dct = {"result": [], "ok": False}
@@ -344,6 +354,8 @@ def make_channel(bot_name, channel_name):
                     send_author_files = filename
 
     try:
+        progress(bot_name, "Отправка в канал")
+        
         print("Отправка в канал")
         if send_author_files:
             with open(send_author_files, "rb") as f:
@@ -387,12 +399,6 @@ def raskrutim_bot(bot_name, upd):
 
     for channel_name in channel_name_lst:
         make_channel_dct = make_channel(bot_name, channel_name)
-
-        token = settings.bot_dct[bot_name]["token"]
-        ovner_id = settings.bot_dct[bot_name]["ovner_id"]
-        key = "sendMessage"
-        url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={make_channel_dct}&parse_mode=html"
-        requests.get(url=url).json()
 
         channel_name_lst = channel_dct.setdefault(channel_name, [])
         for channel_update_dct in make_channel_dct["result"]:
