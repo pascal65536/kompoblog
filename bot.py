@@ -137,7 +137,13 @@ def get_sender_name(message_json):
     return " ".join([x for x in full_name_lst if x is not None])
 
 
-def main(upd=dict()):
+def main(upd=dict(), bot_name=None):
+    bot_name = bot_name or "pascal65536"
+
+    token = settings.bot_dct[bot_name]["token"]
+    sender_id = settings.bot_dct[bot_name]["sender_id"]
+    chat_id = settings.bot_dct[bot_name]["chat_id"]
+
     if not upd:
         return False
 
@@ -148,7 +154,7 @@ def main(upd=dict()):
         return None
 
     try:
-        url = f"https://api.telegram.org/bot{settings.token}/sendMessage?parse_mode=html&text={upd}&chat_id={settings.sender_id}"
+        url = f"https://api.telegram.org/bot{token}/sendMessage?parse_mode=html&text={upd}&chat_id={sender_id}"
         _ = requests.get(url=url).json()
     except Exception:
         print("Ошибка в `sendMessage`")
@@ -179,10 +185,10 @@ def main(upd=dict()):
             if text_lst:
                 text = "\n".join(text_lst)
             key = "sendMessage"
-            url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&text={text}&parse_mode=html"
+            url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&text={text}&parse_mode=html"
             if location_dct:
                 key = "sendLocation"
-                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&latitude={location_dct['latitude']}&longitude={location_dct['longitude']}&parse_mode=html"
+                url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&caption={text}&latitude={location_dct['latitude']}&longitude={location_dct['longitude']}&parse_mode=html"
             elif document_dct:
                 key = "sendDocument"
                 if text_lst:
@@ -190,13 +196,13 @@ def main(upd=dict()):
                         2
                     ] = f"Сообщение: {document_dct['caption']} {get_text(message)}"
                     text = "\n".join(text_lst)
-                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&caption={text}&document={document_dct['file_id']}&file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&parse_mode=html"
+                url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&caption={text}&document={document_dct['file_id']}&file_name={document_dct['file_name']}&mime_type={document_dct['mime_type']}&parse_mode=html"
             elif poll_dct:
                 key = "sendPoll"
-                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&question={poll_dct.get('question')}&options={json.dumps(poll_dct.get('options'))}"
+                url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&question={poll_dct.get('question')}&options={json.dumps(poll_dct.get('options'))}"
             elif sticker_id:
                 key = "sendSticker"
-                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&sticker={sticker_id}"
+                url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&sticker={sticker_id}"
             elif photo_dct:
                 key = "sendPhoto"
                 if text_lst:
@@ -204,7 +210,7 @@ def main(upd=dict()):
                         2
                     ] = f"Сообщение: {photo_dct['caption']} {get_text(message)}"
                     text = "\n".join(text_lst)
-                url = f"https://api.telegram.org/bot{settings.token}/{key}?chat_id={settings.chat_id}&photo={photo_dct['file_id']}&caption={text}&mime_type=multipart/form-data&parse_mode=html"  #
+                url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&photo={photo_dct['file_id']}&caption={text}&mime_type=multipart/form-data&parse_mode=html"  #
             _ = requests.get(url=url).json()
         except Exception as e:
             print("Ошибка в `sendMessage`")
