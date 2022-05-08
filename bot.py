@@ -137,8 +137,7 @@ def get_sender_name(message_json):
     return " ".join([x for x in full_name_lst if x is not None])
 
 
-def pascal65536_bot(upd):
-    bot_name = "pascal65536_bot"
+def pascal65536_bot(bot_name, upd):
     token = settings.bot_dct[bot_name]["token"]
     ovner_id = settings.bot_dct[bot_name]["ovner_id"]
     chat_id = settings.bot_dct[bot_name]["chat_id"]
