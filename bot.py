@@ -235,10 +235,8 @@ def main(upd=dict(), bot_name=None):
     return True
 
 
-def make_channel(channel_name):
+def make_channel(bot_name, channel_name):
 
-    # bot_name = "raskrutimbot"
-    bot_name = "pascal65536"
     token = settings.bot_dct[bot_name]["token"]
     chat_id = settings.bot_dct[bot_name]["chat_id"]
     folder_pic_name = settings.bot_dct[bot_name]["folder_pic_name"]
@@ -363,8 +361,8 @@ def raskrutim_bot(bot_name, upd):
 
     token = settings.bot_dct[bot_name]["token"]
     chat_id = settings.bot_dct[bot_name]["chat_id"]
-    folder_name = settings.bot_dct[bot_name]["folder_name"]
-    channel_json = settings.bot_dct[bot_name]["channel_json"]
+    # folder_name = settings.bot_dct[bot_name]["folder_name"]
+    # channel_json = settings.bot_dct[bot_name]["channel_json"]
     timeout = settings.bot_dct[bot_name]["timeout"]
 
     channel_dct = dict()
@@ -396,7 +394,7 @@ def raskrutim_bot(bot_name, upd):
         # if is_double:
         #     continue
 
-        make_channel_dct = make_channel(channel_name)
+        make_channel_dct = make_channel(bot_name, channel_name)
         channel_name_lst = channel_dct.setdefault(channel_name, [])
         for channel_update_dct in make_channel_dct["result"]:
             channel_name_lst.append(channel_update_dct)
@@ -414,7 +412,7 @@ def raskrutim_bot(bot_name, upd):
                 result_lst.append(f'{text=} "Ошибка в `sendMessage`"')
                 time.sleep(timeout)
 
-    return {"result": [result_lst], "ok": False}
+    return {"result": result_lst, "ok": False}
 
 
 if __name__ == "__main__":
