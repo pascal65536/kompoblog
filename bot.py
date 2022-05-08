@@ -218,20 +218,11 @@ def main(upd=dict(), bot_name=None):
     if "my_chat_member" in upd:
         return None
 
-    text = upd
     if bot_name == "raskrutimbot":
-        ret = raskrutim_bot(bot_name=bot_name, upd=upd)
-        text.update({"bot_name": "raskrutimbot", "ret": ret})
+        _ = raskrutim_bot(bot_name=bot_name, upd=upd)
     elif bot_name == "pascal65536_bot":
-        ret = pascal65536_bot(bot_name=bot_name, upd=upd)
-        text.update({"bot_name": "pascal65536_bot", "ret": ret})
-
-    token = settings.bot_dct[bot_name]["token"]
-    ovner_id = settings.bot_dct[bot_name]["ovner_id"]
-    key = "sendMessage"
-    url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={text}&parse_mode=html"
-    requests.get(url=url).json()
-
+        _ = pascal65536_bot(bot_name=bot_name, upd=upd)
+        
     return True
 
 
