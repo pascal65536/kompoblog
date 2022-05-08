@@ -137,24 +137,14 @@ def get_sender_name(message_json):
     return " ".join([x for x in full_name_lst if x is not None])
 
 
-def main(upd=dict(), bot_name=None):
-    bot_name = bot_name or "pascal65536"
-
+def pascal65536_bot(upd):
+    bot_name = "pascal65536_bot"
     token = settings.bot_dct[bot_name]["token"]
-    sender_id = settings.bot_dct[bot_name]["sender_id"]
+    ovner_id = settings.bot_dct[bot_name]["ovner_id"]
     chat_id = settings.bot_dct[bot_name]["chat_id"]
 
-    if not upd:
-        return False
-
-    if not upd["update_id"]:
-        return False
-
-    if "my_chat_member" in upd:
-        return None
-
     try:
-        url = f"https://api.telegram.org/bot{token}/sendMessage?parse_mode=html&text={upd}&chat_id={sender_id}"
+        url = f"https://api.telegram.org/bot{token}/sendMessage?parse_mode=html&text={upd}&chat_id={ovner_id}"
         _ = requests.get(url=url).json()
     except Exception:
         print("Ошибка в `sendMessage`")
@@ -216,7 +206,212 @@ def main(upd=dict(), bot_name=None):
             print("Ошибка в `sendMessage`")
             time.sleep(settings.timeout)
 
+
+def main(upd=dict(), bot_name=None):
+    bot_name = bot_name or "pascal65536_bot"
+
+    if not upd:
+        return False
+
+    if not upd["update_id"]:
+        return False
+
+    if "my_chat_member" in upd:
+        return None
+
+    if bot_name == "raskrutimbot":
+        raskrutim_bot(bot_name=bot_name, upd=upd)
+    elif bot_name == "pascal65536_bot":
+        pascal65536_bot(bot_name=bot_name, upd=upd)
+
     return True
+
+
+def make_channel(channel_name):
+
+    # bot_name = "raskrutimbot"
+    bot_name = "pascal65536"
+    token = settings.bot_dct[bot_name]["token"]
+    chat_id = settings.bot_dct[bot_name]["chat_id"]
+    folder_pic_name = settings.bot_dct[bot_name]["folder_pic_name"]
+    timeout = settings.bot_dct[bot_name]["timeout"]
+    timeout = settings.bot_dct[bot_name]["timeout"]
+
+    make_channel_dct = {"result": [], "ok": False}
+
+    # Получить информацию о канале
+    key = "getChat"
+    url = f"https://api.telegram.org/bot{token}/{key}?chat_id={channel_name}"
+    chat_dct = {"result": [], "ok": False}
+    try:
+        chat_dct = requests.get(url=url, timeout=timeout).json()
+        print("getChat: OK")
+    except Exception as e:
+        print("Ошибка в `getChat`")
+        time.sleep(timeout)
+
+    if not chat_dct["ok"] and "result" not in chat_dct:
+        return make_channel_dct
+
+    # Получить информацию о количестве человек на канале
+    key = "getChatMemberCount"
+    url = f"https://api.telegram.org/bot{token}/{key}?chat_id={channel_name}"
+    chat_member_count_dct = {"result": None, "ok": False}
+    try:
+        chat_member_count_dct = requests.get(url=url, timeout=timeout).json()
+        print("getChatMemberCount: OK")
+    except Exception as e:
+        print("Ошибка в `getChatMemberCount`")
+        time.sleep(timeout)
+
+    if not chat_member_count_dct["ok"] and "result" not in chat_member_count_dct:
+        return make_channel_dct
+
+    channel_update_dct = {
+        "date": f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}',
+        "members_count": chat_member_count_dct["result"]
+        if chat_member_count_dct["ok"]
+        else None,
+        "description": chat_dct["result"]["description"]
+        if chat_dct["result"] and "description" in chat_dct["result"]
+        else None,
+        "title": chat_dct["result"]["title"]
+        if chat_dct["result"] and "title" in chat_dct["result"]
+        else None,
+        "raw": chat_dct,
+    }
+    caption = f'{channel_name}\n\n{channel_update_dct["title"]}\n{channel_update_dct["description"] if channel_update_dct["description"] else ""}\n\n[{channel_update_dct["members_count"]}]'
+
+    author_dct = {"result": [], "ok": False}
+    file_id = chat_dct["result"].get("photo", {}).get("big_file_id")
+
+    send_author_key = "sendMessage"
+    send_author_url = f"https://api.telegram.org/bot{token}/{send_author_key}?chat_id={chat_id}&text={caption}&parse_mode=html"
+    send_author_files = None
+
+    # Если у канала есть картинка
+    if file_id:
+        # Получить картинку канала
+        key = "getFile"
+        url = f"https://api.telegram.org/bot{token}/{key}?file_id={file_id}"
+        file_dct = {"result": [], "ok": False}
+        try:
+            file_dct = requests.get(url=url, timeout=timeout).json()
+            print("getFile: OK")
+        except Exception as e:
+            print("Ошибка в `getChat`")
+            time.sleep(timeout)
+
+        # Если картинка получена
+        if file_dct["ok"] and "result" in file_dct:
+
+            file_path = file_dct["result"].get("file_path")
+            if file_path:
+                # Скачать картинку канала
+                filename = None
+                try:
+                    url = f"https://api.telegram.org/file/bot{token}/{file_path}"
+                    download_file = requests.get(url=url, timeout=timeout)
+                    print("downloadFile: OK")
+                    filename = os.path.join(
+                        folder_pic_name, f"{channel_name.replace('@', '')}.jpg"
+                    )
+                    if not os.path.exists(folder_pic_name):
+                        os.mkdir(folder_pic_name)
+                    with open(filename, "wb") as f:
+                        f.write(download_file.content)
+                except Exception as e:
+                    print("Ошибка в `downloadFile`")
+                    time.sleep(timeout)
+
+                if filename:
+                    # Собрать сообщение для другого канала
+                    send_author_key = "sendPhoto"
+                    send_author_url = f"https://api.telegram.org/bot{token}/{send_author_key}?chat_id={chat_id}&caption={caption}&mime_type=multipart/form-data"
+                    send_author_files = filename
+
+    try:
+        print("Отправка в канал")
+        if send_author_files:
+            with open(send_author_files, "rb") as f:
+                files = {"photo": f}
+                author_dct = requests.post(url=send_author_url, files=files).json()
+        else:
+            author_dct = requests.get(url=send_author_url).json()
+    except Exception as e:
+        print(f"Ошибка в `{send_author_key}`")
+        time.sleep(timeout)
+
+    if author_dct["ok"] is False:
+        print(f"{author_dct=}")
+    return {"result": [channel_update_dct], "ok": author_dct["ok"]}
+
+
+def raskrutim_bot(upd):
+    text = upd.get("message", {}).get("text")
+    message = upd.get("message")
+    if not text:
+        return
+
+    bot_name = "raskrutimbot"
+    token = settings.bot_dct[bot_name]["token"]
+    chat_id = settings.bot_dct[bot_name]["chat_id"]
+    folder_name = settings.bot_dct[bot_name]["folder_name"]
+    channel_json = settings.bot_dct[bot_name]["channel_json"]
+    timeout = settings.bot_dct[bot_name]["timeout"]
+
+    channel_dct = dict()
+    # Чтение истории сообщений
+    if not os.path.exists(folder_name):
+        os.mkdir(folder_name)
+    filename = os.path.join(folder_name, channel_json)
+    if os.path.exists(filename):
+        with open(filename, encoding="utf-8") as fh:
+            channel_dct = json.load(fh)
+
+    channel_name_lst = set()
+    for t in text.split("\n"):
+        if "@" == t[0]:
+            channel_name_lst.add(t)
+        elif "/" in text:
+            name = t.split("/")[-1]
+            channel_name_lst.add(f"@{name}")
+        else:
+            continue
+
+    for channel_name in channel_name_lst:
+        # Не будем спамить. Оправляем в канал одну и ту же ссылку раз в сутки 60*60*24
+        is_double = False
+        if channel_name in channel_dct:
+            for ch in channel_dct[channel_name]:
+                if (
+                    time.time()
+                    - datetime.datetime.strptime(
+                        ch["date"], "%Y-%m-%d %H:%M:%S"
+                    ).timestamp()
+                    < 60 * 60 * 24
+                ):
+                    is_double = True
+        if is_double:
+            continue
+
+        make_channel_dct = make_channel(channel_name)
+        channel_name_lst = channel_dct.setdefault(channel_name, [])
+        for channel_update_dct in make_channel_dct["result"]:
+            channel_name_lst.append(channel_update_dct)
+
+        # Напишем автору, что его ссылка опубликована
+        if make_channel_dct["ok"]:
+            try:
+                key = "sendMessage"
+                chat_id = get_sender_id(message)
+                date = get_date(message)
+                text = f"{int(time.time()) - date} -> {channel_name}"
+                url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&text={text}&parse_mode=html"
+                _ = requests.get(url=url).json()
+            except Exception as e:
+                print("Ошибка в `sendMessage`")
+                time.sleep(timeout)
 
 
 if __name__ == "__main__":
