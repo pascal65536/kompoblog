@@ -222,7 +222,7 @@ def main(upd=dict(), bot_name=None):
         _ = raskrutim_bot(bot_name=bot_name, upd=upd)
     elif bot_name == "pascal65536_bot":
         _ = pascal65536_bot(bot_name=bot_name, upd=upd)
-        
+
     return True
 
 
