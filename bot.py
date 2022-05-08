@@ -219,6 +219,13 @@ def main(upd=dict(), bot_name=None):
     if "my_chat_member" in upd:
         return None
 
+    token = settings.bot_dct[bot_name]["token"]
+    ovner_id = settings.bot_dct[bot_name]["ovner_id"]
+    key = "sendMessage"
+    text = bot_name
+    url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={text}&parse_mode=html"
+    requests.get(url=url).json()
+
     if bot_name == "raskrutimbot":
         text = 'raskrutimbot'
     #     raskrutim_bot(bot_name=bot_name, upd=upd)
@@ -226,12 +233,7 @@ def main(upd=dict(), bot_name=None):
         text = 'pascal65536_bot'
     #     pascal65536_bot(bot_name=bot_name, upd=upd)
 
-    token = settings.bot_dct[bot_name]["token"]
-    ovner_id = settings.bot_dct[bot_name]["ovner_id"]
-    key = "sendMessage"
-    text += upd
-    url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={text}&parse_mode=html"
-    requests.get(url=url).json()
+
 
     return True
 
