@@ -344,7 +344,6 @@ def make_channel(bot_name, channel_name):
                     send_author_files = filename
 
     try:
-        make_channel_dct["result"].append("Отправка в канал")
         print("Отправка в канал")
         if send_author_files:
             with open(send_author_files, "rb") as f:
@@ -353,12 +352,10 @@ def make_channel(bot_name, channel_name):
         else:
             author_dct = requests.get(url=send_author_url).json()
     except Exception as e:
-        make_channel_dct["result"].append(f"Ошибка в `{send_author_key}`")
         print(f"Ошибка в `{send_author_key}`")
         time.sleep(timeout)
 
     if author_dct["ok"] is False:
-        make_channel_dct["result"].append(f"{author_dct=}")
         print(f"{author_dct=}")
     return {"result": [channel_update_dct], "ok": author_dct["ok"]}
 
@@ -389,21 +386,6 @@ def raskrutim_bot(bot_name, upd):
             continue
 
     for channel_name in channel_name_lst:
-        # Не будем спамить. Оправляем в канал одну и ту же ссылку раз в сутки 60*60*24
-        # is_double = False
-        # if channel_name in channel_dct:
-        #     for ch in channel_dct[channel_name]:
-        #         if (
-        #             time.time()
-        #             - datetime.datetime.strptime(
-        #                 ch["date"], "%Y-%m-%d %H:%M:%S"
-        #             ).timestamp()
-        #             < 60 * 60 * 24
-        #         ):
-        #             is_double = True
-        # if is_double:
-        #     continue
-
         make_channel_dct = make_channel(bot_name, channel_name)
 
         token = settings.bot_dct[bot_name]["token"]
