@@ -226,10 +226,10 @@ def main(upd=dict(), bot_name=None):
     url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={text}&parse_mode=html"
     requests.get(url=url).json()
 
-    if bot_name == "raskrutimbot":
-        raskrutim_bot(bot_name=bot_name, upd=upd)
-    elif bot_name == "pascal65536_bot":
-        pascal65536_bot(bot_name=bot_name, upd=upd)
+    # if bot_name == "raskrutimbot":
+    #     raskrutim_bot(bot_name=bot_name, upd=upd)
+    # elif bot_name == "pascal65536_bot":
+    #     pascal65536_bot(bot_name=bot_name, upd=upd)
 
     return True
 
