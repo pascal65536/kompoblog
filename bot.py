@@ -394,7 +394,21 @@ def raskrutim_bot(bot_name, upd):
         # if is_double:
         #     continue
 
+        token = settings.bot_dct[bot_name]["token"]
+        ovner_id = settings.bot_dct[bot_name]["ovner_id"]
+        key = "sendMessage"
+        text = 'make_channel'
+        url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={text}&parse_mode=html"
+        requests.get(url=url).json()
+
         make_channel_dct = make_channel(bot_name, channel_name)
+
+        token = settings.bot_dct[bot_name]["token"]
+        ovner_id = settings.bot_dct[bot_name]["ovner_id"]
+        key = "sendMessage"
+        url = f"https://api.telegram.org/bot{token}/{key}?chat_id={ovner_id}&text={make_channel_dct}&parse_mode=html"
+        requests.get(url=url).json()
+
         channel_name_lst = channel_dct.setdefault(channel_name, [])
         for channel_update_dct in make_channel_dct["result"]:
             channel_name_lst.append(channel_update_dct)
@@ -412,7 +426,7 @@ def raskrutim_bot(bot_name, upd):
                 result_lst.append(f'{text=} "Ошибка в `sendMessage`"')
                 time.sleep(timeout)
 
-    return {"result": result_lst, "ok": False}
+    return {"result": result_lst, "ok": True}
 
 
 if __name__ == "__main__":
