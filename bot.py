@@ -219,13 +219,12 @@ def main(upd=dict(), bot_name=None):
         return None
 
     text = upd
-
     if bot_name == "raskrutimbot":
-        text.update({'bot_name': 'raskrutimbot'})
-    #     raskrutim_bot(bot_name=bot_name, upd=upd)
+        ret = raskrutim_bot(bot_name=bot_name, upd=upd)
+        text.update({"bot_name": "raskrutimbot", "ret": ret})
     elif bot_name == "pascal65536_bot":
-        text.update({'bot_name': 'pascal65536_bot'})
-        pascal65536_bot(bot_name=bot_name, upd=upd)
+        ret = pascal65536_bot(bot_name=bot_name, upd=upd)
+        text.update({"bot_name": "pascal65536_bot", "ret": ret})
 
     token = settings.bot_dct[bot_name]["token"]
     ovner_id = settings.bot_dct[bot_name]["ovner_id"]
@@ -356,13 +355,12 @@ def make_channel(channel_name):
     return {"result": [channel_update_dct], "ok": author_dct["ok"]}
 
 
-def raskrutim_bot(upd):
+def raskrutim_bot(bot_name, upd):
     text = upd.get("message", {}).get("text")
     message = upd.get("message")
     if not text:
-        return
+        return {"result": ["message is empty"], "ok": False}
 
-    bot_name = "raskrutimbot"
     token = settings.bot_dct[bot_name]["token"]
     chat_id = settings.bot_dct[bot_name]["chat_id"]
     folder_name = settings.bot_dct[bot_name]["folder_name"]
@@ -370,14 +368,7 @@ def raskrutim_bot(upd):
     timeout = settings.bot_dct[bot_name]["timeout"]
 
     channel_dct = dict()
-    # Чтение истории сообщений
-    if not os.path.exists(folder_name):
-        os.mkdir(folder_name)
-    filename = os.path.join(folder_name, channel_json)
-    if os.path.exists(filename):
-        with open(filename, encoding="utf-8") as fh:
-            channel_dct = json.load(fh)
-
+    result_lst = list()
     channel_name_lst = set()
     for t in text.split("\n"):
         if "@" == t[0]:
@@ -386,23 +377,24 @@ def raskrutim_bot(upd):
             name = t.split("/")[-1]
             channel_name_lst.add(f"@{name}")
         else:
+            result_lst.append(f"{t=} not channel name")
             continue
 
     for channel_name in channel_name_lst:
         # Не будем спамить. Оправляем в канал одну и ту же ссылку раз в сутки 60*60*24
-        is_double = False
-        if channel_name in channel_dct:
-            for ch in channel_dct[channel_name]:
-                if (
-                    time.time()
-                    - datetime.datetime.strptime(
-                        ch["date"], "%Y-%m-%d %H:%M:%S"
-                    ).timestamp()
-                    < 60 * 60 * 24
-                ):
-                    is_double = True
-        if is_double:
-            continue
+        # is_double = False
+        # if channel_name in channel_dct:
+        #     for ch in channel_dct[channel_name]:
+        #         if (
+        #             time.time()
+        #             - datetime.datetime.strptime(
+        #                 ch["date"], "%Y-%m-%d %H:%M:%S"
+        #             ).timestamp()
+        #             < 60 * 60 * 24
+        #         ):
+        #             is_double = True
+        # if is_double:
+        #     continue
 
         make_channel_dct = make_channel(channel_name)
         channel_name_lst = channel_dct.setdefault(channel_name, [])
@@ -419,8 +411,10 @@ def raskrutim_bot(upd):
                 url = f"https://api.telegram.org/bot{token}/{key}?chat_id={chat_id}&text={text}&parse_mode=html"
                 _ = requests.get(url=url).json()
             except Exception as e:
-                print("Ошибка в `sendMessage`")
+                result_lst.append(f'{text=} "Ошибка в `sendMessage`"')
                 time.sleep(timeout)
+
+    return {"result": [result_lst], "ok": False}
 
 
 if __name__ == "__main__":
