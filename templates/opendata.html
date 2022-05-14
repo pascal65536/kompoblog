@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <link href="/static/images/favicon.png?7" rel="shortcut icon" type="image/png">
+    <title>Открытый Красноярск</title>
+    <style type='text/css'>
+        .name {
+            height: 40px;
+            background: #568fc1;
+            font: bold 10px/10px Tahoma;
+            color: #ffffff;
+            padding: 5px 10px
+        }
+
+        .name span {
+            font: bold 18px/18px Verdana;
+            border-bottom: 1px dashed #ffa500;
+            cursor: pointer
+        }
+
+        .name span:hover {
+            border: 1
+        }
+    </style>
+    <script type='text/javascript'>
+        function toggleMe(a) {
+            var e = document.getElementById(a);
+            if (!e) return true;
+            if (e.style.display == 'none') {
+                e.style.display = 'block'
+            } else {
+                e.style.display = 'none'
+            }
+            return true;
+        }
+    </script>
+    <script src="https://kit.fontawesome.com/c6bb53c2cf.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <p class='name'>
+        <span onclick='return toggleMe(1)'>
+            <i class="fa fa-book-open"></i>&nbsp;Власть
+        </span>
+    </p>
+    <div id='1' style='display: none;'>
+        <p><a
+                href='http://www.gornovosti.ru/tema/other/kak-obratitsya-k-deputatu-krasnoyarskogo-gorodskogo-coveta-deputatov47565.htm'>Обратиться
+                к депутату горсовета</a>
+        <p><a
+                href='http://www.gornovosti.ru/tema/other/kak-obratitsya-k-deputatu-zaksobraniya-krasnoyarskogo-kraya47566.htm'>Обратиться
+                к депутату Заксобрания Красноярского края</a>
+        <p><a
+                href='http://www.gornovosti.ru/tema/other/kak-obratitsya-k-gubernatoru-i-v-pravitelstvo-krasnoyarskogo-kraya47567.htm'>Обратиться
+                к губернатору и в правительство Красноярского края</a>
+        <p><a
+                href='http://www.gornovosti.ru/tema/other/kak-obratitsya-k-meru-i-v-administratsiyu-krasnoyarska47564.htm'>Обратиться
+                к мэру и в администрацию Красноярска</a>
+        <p><a href='http://www.gornovosti.ru/tema/other/kak-obratitsya-k-prezidentu-rf-i-v-pravitelstvo-rf47568.htm'>Обратиться
+                к президенту РФ и в правительство РФ</a>
+        <p><a href='http://www.rosminzdrav.ru/reception/form'>Обратиться в Министерство здравоохранения РФ</a>
+        <p><a href='http://www.sobranie.info/request.php'>Обратиться в Законодательное собрание Красноярского края</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(2)'>
+            <i class="fa fa-book-open"></i>&nbsp;Гос.услуги
+        </span>
+    </p>
+    <div id='2' style='display: none;'>
+        <p><a href='http://www.admkrsk.ru/handbook/Pages/default.aspx'>Справочник жителя</a>
+        <p><a href='http://www.gosuslugi.krskstate.ru/web/guest/service_cat?serviceId=4748'>Найти работу</a>
+        <p><a href='http://www.gosuslugi.krskstate.ru/web/guest/service_cat?serviceUnionId=887'>Встать на учёт как
+                нуждающийся в жилье</a>
+        <p><a href='http://www.gosuslugi.krskstate.ru/web/guest/service_cat?serviceUnionId=892'>Постановка на учет и
+                зачисление детей в детские сады</a>
+        <p><a href='http://www.gosuslugi.ru/pgu/service/10000581563_26.html'>Узнать о штрафах в ГИБДД</a>
+        <p><a href='http://www.krasufms.ru/doc/ozp/'>Оформить загранпаспорт</a>
+        <p><a href='http://24mfc.ru/'>Многофункциональный центр Красноярского края</a>
+        <p><a href='http://services.fms.gov.ru/info-service.htm?sid=2000'>Проверка по списку недействительных российских
+                паспортов</a>
+        <p><a
+                href='http://www.24bpd.ru/mserver/simple/view.php?id=2581157b-4450-fea6-c8a5-700d67bbb6f4&pos=16549238.2813,6545087.9282&zoom=3&tile=bpd_light'>Карта
+                расположения инфоматов электронного правительства Красноярского края</a>
+        <p><a href='http://www.admkrsk.ru/administration/singlewindow/Pages/service.aspx?ServiceID=164'>Сведения о
+                муниципальной услуге</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(3)'>
+            <i class="fa fa-book-open"></i>&nbsp;Дороги и транспорт
+        </span>
+    </p>
+    <div id='3' style='display: none;'>
+        <p><a href='http://www.admkrsk.ru/citytoday/municipal/roads/control/Pages/forms.aspx'>Пожаловаться на
+                дорожников</a>
+        <p><a href='http://www.e-traffic.ru/depot/krasnoyarsk'>Купить билет на междугородний автобус</a>
+        <p><a href='http://nashkrasnoyarsk.ru/control/tasks'>Пожаловаться на общественный транспорт</a>
+        <p><a href='http://mu-kgt.ru/tab/'>Узнать где находится маршрутный автобус</a>
+        <p><a href='http://nashkrasnoyarsk.ru/control/tasks'>Пожаловаться на ремонт дорог и дворовых проездов</a>
+        <p><a href='http://nashkrasnoyarsk.ru/control/tasks'>Пожаловаться на остановочные пункты</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(4)'>
+            <i class="fa fa-book-open"></i>&nbsp;ЖКХ
+        </span>
+    </p>
+    <div id='4' style='display: none;'>
+        <p><a
+                href='http://www.gornovosti.ru/tema/openkrsk/kto-kak-i-zachem-dolzhen-stavit-v-kvartirakh-i-domakh-schetchiki77574.htm'>Кто,
+                как и зачем должен ставить в квартирах и домах счётчики</a>
+        <p><a href='http://roszkh.ru/'>Пожаловаться на работу организаций в сфере ЖКХ</a>
+        <p><a href='http://www.gosuslugi.krskstate.ru/service_cat?serviceUnionId=869'>Перевод жилого помещения в нежилое
+                и нежилого в жилое</a>
+        <p><a href='http://www.krasguk.ru/'>Жилфонд</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(5)'>
+            <i class="fa fa-book-open"></i>&nbsp;Культура и досуг
+        </span>
+    </p>
+    <div id='5' style='display: none;'>
+        <p><a
+                href='http://gornovosti.ru/tema/other/munitsipalnyye-uchrezhdeniya-kultury-krasnoyarska76545.htm'>Библиотеки</a>
+        <p><a href='http://gornovosti.ru/tema/other/munitsipalnyye-uchrezhdeniya-kultury-krasnoyarska76545.htm'>Образовательные
+                учреждения культуры</a>
+        <p><a href='http://gornovosti.ru/tema/other/munitsipalnyye-uchrezhdeniya-kultury-krasnoyarska76545.htm'>Дома
+                культуры и клубы</a>
+        <p><a href='http://gornovosti.ru/tema/other/munitsipalnyye-uchrezhdeniya-kultury-krasnoyarska76545.htm'>Выставочные
+                залы и музеи</a>
+        <p><a
+                href='http://gornovosti.ru/tema/other/munitsipalnyye-uchrezhdeniya-kultury-krasnoyarska76545.htm'>Парки</a>
+        <p><a
+                href='http://gornovosti.ru/tema/other/munitsipalnyye-uchrezhdeniya-kultury-krasnoyarska76545.htm'>Театры</a>
+        <p><a
+                href='http://www.gornovosti.ru/tema/other/kak-v-krasnoyarske-zabronirovat-bilety-v-kino40582.htm'>Кинотеатры</a>
+        <p><a href='http://gornovosti.ru/tema/other/munitsipalnyye-uchrezhdeniya-kultury-krasnoyarska76545.htm'>Концертные
+                и цирковые организации</a>
+        <p><a href='http://www.gornovosti.ru/tema/other/kak-v-krasnoyarske-zabronirovat-bilety-v-kino40582.htm'>Забронировать
+                билет в кино</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(8)'>
+            <i class="fa fa-book-open"></i>&nbsp;Образование
+        </span>
+    </p>
+    <div id='8' style='display: none;'>
+        <p><a href='http://www.krao.ru/rb-topic_t_1136.htm'>Конкурс учителей до 35 лет на замещение вакансий - 2015</a>
+        <p><a href='http://www.krskstate.ru/krao/underschool/queue'>Текущее состояние очереди в детских садах</a>
+        <p><a href='http://gornovosti.ru/tema/other/kak-vstat-v-ochered-na-detskiy-sad36466.htm'>Управление образования
+                администрации города и районов</a>
+        <p><a href='http://gornovosti.ru/tema/other/kak-vstat-v-ochered-na-detskiy-sad36466.htm'>Встать в очередь на
+                детский сад в Красноярске</a>
+        <p><a href='http://www.24bpd.ru/mserver/simple/view.php?id=fdae657d-b16a-a3f0-2ca0-42a531009fd1&tile=bpd_light'>Карта
+                образовательных учреждений Красноярского края</a>
+        <p><a
+                href='http://gornovosti.ru/tema/krai-to-krai/vypuskniki-posadyat-derevia-v-parke-400-letiya-krasnoyarska36688.htm'>Трудовой
+                отряд Главы города</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(9)'>
+            <i class="fa fa-book-open"></i>&nbsp;Общественное самоуправление
+        </span>
+    </p>
+    <div id='9' style='display: none;'>
+        <p><a
+                href='http://gornovosti.ru/glavnoe/kuda-pozhalovatsya-krasnoyartsam-na-nezakonnyye-pobory-v-shkolakh43116.htm'>Пожаловаться
+                на незаконные поборы в школах</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(10)'>
+            <i class="fa fa-book-open"></i>&nbsp;Правопорядок и безопасность
+        </span>
+    </p>
+    <div id='10' style='display: none;'>
+        <p><a
+                href='http://gornovosti.ru/tema/dobrosovet/v-krasnoyarske-obyavlen-konkurs-na-luchshego-gorodskogo-uchastkovogo76568.htm'>Участковые
+                пункты полиции</a>
+        <p><a href='http://www.krasproc.ru/reception/message'>Обратиться в прокуратуру Красноярского края</a>
+        <p><a href='http://gornovosti.ru/tema/other/rayonnyye-prokuratury-krasnoyarska36363.htm'>Районные прокуратуры
+                Красноярска</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(13)'>
+            <i class="fa fa-book-open"></i>&nbsp;Социальная сфера
+        </span>
+    </p>
+    <div id='13' style='display: none;'>
+        <p><a href='http://gornovosti.ru/tema/questions/pochemu-izmenilis-tarify76525.htm'>Организации социального
+                обслуживания населения</a>
+        <p><a href='http://www.pfrf.ru/direc_online/'>Обратиться в Пенсионный Фонд России</a>
+        <p><a href='http://www.rosmintrud.ru/reception/form'>Обратиться в Министерство труда и социальной защиты РФ</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(14)'>
+            <i class="fa fa-book-open"></i>&nbsp;Спорт
+        </span>
+    </p>
+    <div id='14' style='display: none;'>
+        <p><a
+                href='http://www.gornovosti.ru/tema/stadion/v-kakuyu-sektsiyu-zapisat-rebenka-v-krasnoyarskom-kraye28199.htm'>Детские
+                спортивные секции</a>
+        <p><a
+                href='http://gornovosti.ru/tema/stadion/vse-basseyny-krasnoyarska-adresa-kontakty-stoimost-uslug73482.htm'>Бассейны</a>
+        <p><a href='http://centrsportclub.ru/'>Спортклубы по месту жительства</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(16)'>
+            <i class="fa fa-book-open"></i>&nbsp;Торговля и сфера услуг
+        </span>
+    </p>
+    <div id='16' style='display: none;'>
+        <p><a href='http://www.krasene.ru/index.php?option=com_content&view=article&id=56&Itemid=54'>Обратиться
+                интернет-приёмную ОАО "МРСК Сибири"</a>
+        <p><a href='http://www.lada.ru/test-drive/'>Запись на тест-драйв автомобиля Lada</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(19)'>
+            <i class="fa fa-book-open"></i>&nbsp;Здравоохранение
+        </span>
+    </p>
+    <div id='19' style='display: none;'>
+        <p><a href='http://www.gornovosti.ru/tema/dobrosovet/gde-nakhodyatsya-travmpunkty-v-krasnoyarske49860.htm'>Обратиться
+                в травмпункт</a>
+        <p><a href='http://www.krasmed.ru/feedback/faq/new.php'>Обратиться в Фонд обязательного медицинского страхования
+                по красноярскому краю</a>
+        <p><a href='http://www.web-registratura.ru/index.php?open=system/record&step=1&mode=1'>Записаться к врачу</a>
+        <p><a
+                href='http://gornovosti.ru/glavnoe/kak-krasnoyartsu-poluchit-ekstrennuyu-meditsinskuyu-pomoshch-nakhodyas-na-dache38430.htm'>Получить
+                экстренную медицинскую помощь находясь на даче</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(23)'>
+            <i class="fa fa-book-open"></i>&nbsp;Встать на учёт
+        </span>
+    </p>
+    <div id='23' style='display: none;'>
+        <p><a href='http://www.gornovosti.ru/tema/other/gde-v-krasnoyarske-vstat-na-voinskiy-uchet40584.htm'>Встать на
+                учёт в военкомат</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(24)'>
+            <i class="fa fa-book-open"></i>&nbsp;Подать заявление
+        </span>
+    </p>
+    <div id='24' style='display: none;'>
+        <p><a
+                href='http://gornovosti.ru/glavnoe/podat-zayavleniye-v-krasnoyarskiye-zagsy-mozhno-cherez-internet35937.htm'>Подать
+                заявление в ЗАГС</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(25)'>
+            <i class="fa fa-book-open"></i>&nbsp;Узнать
+        </span>
+    </p>
+    <div id='25' style='display: none;'>
+        <p><a href='http://gornovosti.ru/tema/other/uznay-granitsy-dvora-svoyego-doma36330.htm'>Узнать границы своего
+                дома</a>
+        <p><a
+                href='http://gornovosti.ru/tema/vazhno-znat/novaya-pensionnaya-formula-rassmotrena-gosdumoy-v-pervom-chtenii46149.htm'>Узнать
+                размер будущей пенсии</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(26)'>
+            <i class="fa fa-book-open"></i>&nbsp;Обратиться
+        </span>
+    </p>
+    <div id='26' style='display: none;'>
+        <p><a href='http://ombudsmankk.ru/form/complaint'>Обратиться к уполномоченному по правам человека в Красноярском
+                крае</a>
+    </div>
+    <p class='name'>
+        <span onclick='return toggleMe(27)'>
+            <i class="fa fa-book-open"></i>&nbsp;Получить
+        </span>
+    </p>
+    <div id='27' style='display: none;'>
+        <p><a href='http://gornovosti.ru/tema/dobrosovet/kak-poluchit-nalogovyy-vychet36745.htm'>Как получить
+                имущественный и социальный налоговый вычет</a>
+        <p><a href='http://www.admkrsk.ru/administration/singlewindow/Pages/service.aspx?ServiceID=7'>Получить
+                материальную помощь на посещение бань (для пенсионеров, инвалидов)</a>
+        <p><a href='http://gornovosti.ru/tema/questions/kvartira-popolam44505.htm'>Получить жильё по программе 50 на
+                50</a>
+        <p><a
+                href='http://gornovosti.ru/tema/dobrosovet/zhilishchnyye-subsidii-predostavleniye-polucheniye-oformleniye38546.htm'>Получить
+                жилищную субсидию</a>
+        <p><a href='http://www.admkrsk.ru/administration/singlewindow/Pages/service.aspx?ServiceID=164'>Получить справку
+                из архива</a>
+        <p><a href='http://www.admkrsk.ru/administration/singlewindow/Pages/service.aspx?ServiceID=27'>Получить
+                материальную помощь многодетным семьям</a>
+        <p><a href='http://www.admkrsk.ru/administration/singlewindow/Pages/service.aspx?ServiceID=28'>Получить
+                единовременную материальную помощь многодетным семьям, имеющим 5 и более детей в возрасте до 18 лет</a>
+        <p><a href='http://www.admkrsk.ru/administration/singlewindow/Pages/service.aspx?ServiceID=5'>Получить
+                компенсацию на приобретение ежемесячного льготного проездного билета студентам из малообеспеченных
+                семей, одному из родителей (законных представителей) семей с пятью и более детьми в возрасте до 18 лет,
+                проживающих совместно</a>
+    </div>
+</body>
+
+</html>

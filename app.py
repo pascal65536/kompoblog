@@ -30,6 +30,11 @@ def taplink():
     return render_template("taplink.html")
 
 
+@application.route("/opendata", methods=["GET"])
+def opendata():
+    return render_template("opendata.html")
+
+
 @application.route("/")
 def root():
     return render_template("404.html"), 404
